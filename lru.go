@@ -4,7 +4,7 @@ import (
 	"container/list"
 )
 
-type Cache struct {
+type Lru struct {
 	MaxEntries int 	//Max Cap , 0 means unlimited.
 
 	//Callback when delete something.
@@ -24,15 +24,15 @@ type entry struct {
 	value interface{}
 }
 
-func New(maxEntries int) *Cache{
-	return &Cache{
+func New(maxEntries int) *Lru{
+	return &Lru{
 		MaxEntries: maxEntries,
 		ll:         list.New(),
 		cache:      make(map[interface{}]*list.Element),
 	}
 }
 
-func (c *Cache)Add(key Key,value interface{}) {
+func (c *Lru)Add(key Key,value interface{}) {
 	if c == nil{
 		c.ll = list.New()
 		c.cache = make(map[interface{}]*list.Element)
@@ -50,7 +50,7 @@ func (c *Cache)Add(key Key,value interface{}) {
 
 }
 
-func (c *Cache)Get(key Key)(interface{},bool){
+func (c *Lru)Get(key Key)(interface{},bool){
 	if c == nil{
 		return nil , false
 	}
@@ -61,7 +61,7 @@ func (c *Cache)Get(key Key)(interface{},bool){
 	return nil,false
 }
 
-func (c *Cache) RemoveOldest(){
+func (c *Lru) RemoveOldest(){
 	if c == nil{
 		return
 	}
@@ -71,7 +71,7 @@ func (c *Cache) RemoveOldest(){
 	}
 }
 
-func (c *Cache)RemoveElement(e *list.Element){
+func (c *Lru)RemoveElement(e *list.Element){
 	c.ll.Remove(e)
 	if v  , ok  := e.Value.(*entry);ok {
 		delete(c.cache,v.key)
@@ -81,7 +81,7 @@ func (c *Cache)RemoveElement(e *list.Element){
 	}
 }
 
-func (c *Cache)Len()int{
+func (c *Lru)Len()int{
 	if c == nil{
 		return 0
 	}

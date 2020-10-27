@@ -42,7 +42,7 @@ func Test_lru(t *testing.T)  {
 
 func TestNewSafeCache(t *testing.T) {
 	c := New(5)
-	sc := NewSafeCache(*c)
+	sc := NewSafeCache(c)
 	sc.Set("s1",1)
 	if 1 != sc.Get("s1").(int) {
 		t.Fatal("error")
