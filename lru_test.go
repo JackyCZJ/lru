@@ -39,3 +39,19 @@ func Test_lru(t *testing.T)  {
 	}
 
 }
+
+func TestNewSafeCache(t *testing.T) {
+	c := New(5)
+	sc := NewSafeCache(*c)
+	sc.Set("s1",1)
+	if 1 != sc.Get("s1").(int) {
+		t.Fatal("error")
+	}
+	sc.Get("s2")
+	if sc.Stat().NGet != 2{
+		t.Fatal("error")
+	}
+	if sc.Stat().NHit != 1{
+		t.Fatal("error")
+	}
+}
