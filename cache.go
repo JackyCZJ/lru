@@ -2,6 +2,8 @@ package lru
 
 
 type Cache interface {
-	Add(key Key,value interface{})
+	Set(key Key,value interface{})
 	Get(key Key)(interface{},bool)
+	Len()int
+	Del(key Key)
 }

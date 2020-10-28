@@ -32,7 +32,7 @@ func New(maxEntries int) *Lru{
 	}
 }
 
-func (c *Lru)Add(key Key,value interface{}) {
+func (c *Lru)Set(key Key,value interface{}) {
 	if c == nil{
 		c.ll = list.New()
 		c.cache = make(map[interface{}]*list.Element)
@@ -78,6 +78,15 @@ func (c *Lru)RemoveElement(e *list.Element){
 		if c.OnEvicted != nil{
 			c.OnEvicted(v.key,v.value)
 		}
+	}
+}
+
+func(c *Lru)Del(key Key){
+	if c == nil{
+		return
+	}
+	if v , ok := c.cache[key];ok{
+		c.RemoveElement(v)
 	}
 }
 
