@@ -87,7 +87,7 @@ func (c *FastCache)getShard(key Key)*SafeCache{
 	return c.shards[hashKey&c.shardMask]
 }
 
-func (c *FastCache)Set(key Key,value string){
+func (c *FastCache)Set(key Key,value interface{}){
 	c.getShard(key).Set(key.(string),value)
 }
 
